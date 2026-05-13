@@ -17,8 +17,8 @@ export default function MemorialLayout({
   if (!memorial) notFound();
 
   return (
-    <div className="mx-auto max-w-mobile min-h-screen pb-24">
-      {children}
+    <div className="relative mx-auto max-w-mobile h-[100dvh] overflow-y-auto overscroll-contain scrollbar-hide">
+      <div className="pb-24">{children}</div>
       <BottomNav slug={params.slug} />
     </div>
   );

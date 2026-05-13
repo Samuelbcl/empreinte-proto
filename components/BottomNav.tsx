@@ -26,7 +26,7 @@ export default function BottomNav({ slug }: { slug: string }) {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile z-50 border-t border-sand-200/80 bg-sand-50/90 backdrop-blur-md"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-mobile z-50 border-t border-sand-200 bg-sand-50 shadow-[0_-4px_20px_-8px_rgba(15,23,41,0.08)]"
     >
       <ul className="flex items-stretch justify-around px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {tabs.map((tab) => {

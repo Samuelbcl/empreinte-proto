@@ -6,6 +6,7 @@ export type FamilyMember = {
   death?: number;
   photo?: string;
   isDeceased?: boolean;
+  parentId?: string;
 };
 
 export type TimelineEvent = {
@@ -81,10 +82,10 @@ export const jeanDupont: Memorial = {
       { id: "c3", name: "Sophie",  role: "Fille", birth: 1975, photo: J("fille-sophie.png") },
     ],
     grandchildren: [
-      { id: "g1", name: "Thomas", role: "Petit-fils",  birth: 1995, photo: J("petit-thomas.png") },
-      { id: "g2", name: "Léa",    role: "Petite-fille", birth: 1998, photo: J("petite-lea.png") },
-      { id: "g3", name: "Julien", role: "Petit-fils",  birth: 2002, photo: J("petit-julien.png") },
-      { id: "g4", name: "Emma",   role: "Petite-fille", birth: 2005, photo: J("petite-emma.png") },
+      { id: "g1", name: "Thomas", role: "Petit-fils",  birth: 1995, photo: J("petit-thomas.png"), parentId: "c1" },
+      { id: "g2", name: "Léa",    role: "Petite-fille", birth: 1998, photo: J("petite-lea.png"),    parentId: "c2" },
+      { id: "g3", name: "Julien", role: "Petit-fils",  birth: 2002, photo: J("petit-julien.png"),  parentId: "c2" },
+      { id: "g4", name: "Emma",   role: "Petite-fille", birth: 2005, photo: J("petite-emma.png"),   parentId: "c3" },
     ],
   },
 

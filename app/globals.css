@@ -7,12 +7,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    height: 100%;
   }
   body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     background-image: radial-gradient(ellipse at top, #F9F4EC 0%, #F5EFE6 60%, #EDE3D1 100%);
-    background-attachment: fixed;
-    min-height: 100vh;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-cormorant), Georgia, serif;
@@ -32,4 +34,7 @@
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .tree-line {
+    background-color: rgba(201, 169, 97, 0.45);
+  }
 }
