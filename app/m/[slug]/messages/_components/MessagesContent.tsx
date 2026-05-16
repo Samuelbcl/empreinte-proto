@@ -16,7 +16,7 @@ export default function MessagesContent({
   memorial: Memorial;
   slug: string;
 }) {
-  const { lit, ready, toggle } = useCandle(slug);
+  const { lit, ready, light } = useCandle(slug);
   const total = m.candles + (lit ? 1 : 0);
 
   return (
@@ -79,43 +79,39 @@ export default function MessagesContent({
           <span className="text-warm-500 ml-1">bougies allumées</span>
         </p>
 
-        <button
-          onClick={toggle}
-          disabled={!ready}
-          className={
-            lit
-              ? "mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sand-50 text-ink-900 border border-sand-300 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95"
-              : "mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-900 text-sand-50 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95"
-          }
-        >
-          <Flame size={16} className={lit ? "text-warm-500" : "text-gold-500"} />
-          <span>{lit ? "Éteindre ma bougie" : "Allumer une bougie"}</span>
-        </button>
+        {!lit ? (
+          <button
+            onClick={light}
+            disabled={!ready}
+            className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-900 text-sand-50 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95 disabled:opacity-60"
+          >
+            <Flame size={16} className="text-gold-500" />
+            <span>Allumer une bougie</span>
+          </button>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sand-50 text-gold-700 border border-gold-500/40"
+          >
+            <Flame size={14} className="text-gold-600" fill="currentColor" />
+            <span className="text-sm italic">Votre bougie brûle pour lui</span>
+          </motion.div>
+        )}
 
-        <AnimatePresence mode="wait">
-          {lit ? (
+        <AnimatePresence>
+          {lit && (
             <motion.p
               key="thanks"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-3 text-xs text-gold-700 italic"
             >
               Merci pour votre lumière.
             </motion.p>
-          ) : ready ? (
-            <motion.p
-              key="hint"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="mt-3 text-[11px] text-warm-400"
-            >
-              Une seule bougie par personne, en mémoire.
-            </motion.p>
-          ) : null}
+          )}
         </AnimatePresence>
       </motion.section>
     </main>

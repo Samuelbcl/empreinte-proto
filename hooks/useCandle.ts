@@ -21,18 +21,17 @@ export function useCandle(slug: string) {
     setReady(true);
   }, [slug]);
 
-  const toggle = useCallback(() => {
+  const light = useCallback(() => {
     setLit((prev) => {
-      const next = !prev;
+      if (prev) return prev;
       try {
-        if (next) localStorage.setItem(key(slug), "1");
-        else localStorage.removeItem(key(slug));
+        localStorage.setItem(key(slug), "1");
       } catch {
         /* ignore */
       }
-      return next;
+      return true;
     });
   }, [slug]);
 
-  return { lit, ready, toggle };
+  return { lit, ready, light };
 }

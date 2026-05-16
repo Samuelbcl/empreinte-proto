@@ -62,7 +62,7 @@ export const jeanDupont: Memorial = {
   died: 2023,
   epitaph: "Le silence est la voix des grandes émotions.",
   bio: "Mari aimant, père dévoué, grand-père tendre. Passionné de photographie, d'horizons lointains et de simples moments partagés autour d'un café.",
-  candles: 1248,
+  candles: 5,
 
   hero:  { src: J("portrait-2020.png"), alt: "Portrait de Jean Dupont, 2020" },
   cover: { src: J("cover.png"),         alt: "Photo de couverture" },
