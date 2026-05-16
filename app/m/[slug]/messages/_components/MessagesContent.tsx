@@ -2,21 +2,22 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame } from "lucide-react";
-import { useState } from "react";
 import OliveDivider from "@/components/OliveDivider";
+import Candle from "@/components/Candle";
+import { useCandle } from "@/hooks/useCandle";
 import type { Memorial } from "@/data/memorials/jean-dupont";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
-export default function MessagesContent({ memorial: m }: { memorial: Memorial }) {
-  const [extra, setExtra] = useState(0);
-  const [pulseKey, setPulseKey] = useState(0);
-  const total = m.candles + extra;
-
-  const light = () => {
-    setExtra((n) => n + 1);
-    setPulseKey((n) => n + 1);
-  };
+export default function MessagesContent({
+  memorial: m,
+  slug,
+}: {
+  memorial: Memorial;
+  slug: string;
+}) {
+  const { lit, ready, toggle } = useCandle(slug);
+  const total = m.candles + (lit ? 1 : 0);
 
   return (
     <main className="px-5 pt-8 pb-6">
@@ -67,31 +68,8 @@ export default function MessagesContent({ memorial: m }: { memorial: Memorial })
           Une bougie pour lui
         </p>
 
-        <div className="relative my-5 h-24 flex items-center justify-center">
-          <motion.div
-            animate={{ scale: [1, 1.06, 1], opacity: [0.85, 1, 0.85] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 flex items-center justify-center"
-            aria-hidden
-          >
-            <Flame
-              size={64}
-              className="text-gold-500 fill-gold-400/30 drop-shadow-[0_0_18px_rgba(201,169,97,0.55)]"
-            />
-          </motion.div>
-          <AnimatePresence>
-            {pulseKey > 0 && (
-              <motion.div
-                key={pulseKey}
-                initial={{ scale: 0.6, opacity: 0.6 }}
-                animate={{ scale: 1.8, opacity: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.9, ease }}
-                className="absolute w-20 h-20 rounded-full bg-gold-400/30"
-                aria-hidden
-              />
-            )}
-          </AnimatePresence>
+        <div className="my-3 flex items-end justify-center min-h-[170px]">
+          <Candle lit={lit} size={90} />
         </div>
 
         <p className="text-sm">
@@ -102,26 +80,42 @@ export default function MessagesContent({ memorial: m }: { memorial: Memorial })
         </p>
 
         <button
-          onClick={light}
-          className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-900 text-sand-50 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95"
+          onClick={toggle}
+          disabled={!ready}
+          className={
+            lit
+              ? "mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sand-50 text-ink-900 border border-sand-300 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95"
+              : "mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-900 text-sand-50 text-sm shadow-soft hover:shadow-gold transition-all active:scale-95"
+          }
         >
-          <Flame size={16} className="text-gold-500" />
-          <span>Allumer une bougie</span>
+          <Flame size={16} className={lit ? "text-warm-500" : "text-gold-500"} />
+          <span>{lit ? "Éteindre ma bougie" : "Allumer une bougie"}</span>
         </button>
 
-        <AnimatePresence>
-          {extra > 0 && (
+        <AnimatePresence mode="wait">
+          {lit ? (
             <motion.p
-              key={extra}
+              key="thanks"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.5 }}
               className="mt-3 text-xs text-gold-700 italic"
             >
               Merci pour votre lumière.
             </motion.p>
-          )}
+          ) : ready ? (
+            <motion.p
+              key="hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mt-3 text-[11px] text-warm-400"
+            >
+              Une seule bougie par personne, en mémoire.
+            </motion.p>
+          ) : null}
         </AnimatePresence>
       </motion.section>
     </main>

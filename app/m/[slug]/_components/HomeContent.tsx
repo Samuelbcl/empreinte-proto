@@ -5,11 +5,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Flame, ChevronRight } from "lucide-react";
 import OliveDivider from "@/components/OliveDivider";
+import { useCandle } from "@/hooks/useCandle";
 import type { Memorial } from "@/data/memorials/jean-dupont";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
 export default function HomeContent({ memorial: m, slug }: { memorial: Memorial; slug: string }) {
+  const { lit } = useCandle(slug);
+  const total = m.candles + (lit ? 1 : 0);
+
   return (
     <main className="pb-6">
       {/* Cover */}
@@ -97,7 +101,7 @@ export default function HomeContent({ memorial: m, slug }: { memorial: Memorial;
           >
             <Flame size={16} className="text-gold-500 transition-transform group-hover:scale-110" />
             <span className="tabular-nums">
-              <strong className="font-semibold">{m.candles.toLocaleString("fr-BE")}</strong>
+              <strong className="font-semibold">{total.toLocaleString("fr-BE")}</strong>
               <span className="opacity-80"> bougies allumées</span>
             </span>
             <ChevronRight size={14} className="opacity-50 transition-transform group-hover:translate-x-0.5" />

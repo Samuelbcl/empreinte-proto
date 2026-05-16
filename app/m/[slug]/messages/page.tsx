@@ -5,5 +5,5 @@ import MessagesContent from "./_components/MessagesContent";
 export default function MessagesPage({ params }: { params: { slug: string } }) {
   const m = getMemorial(params.slug);
   if (!m) notFound();
-  return <MessagesContent memorial={m} />;
+  return <MessagesContent memorial={m} slug={params.slug} />;
 }
